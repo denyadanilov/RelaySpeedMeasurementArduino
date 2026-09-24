@@ -1,0 +1,13 @@
+#pragma once
+
+#define RELAY_DRIVER_PIN 6
+#define RELAY_INPUT_PIN 7
+#define TRANSISTOR_INPUT_PIN 16
+#define RELAY_TOGGLE_MAX_COUNT 10
+#define RELAY_TOGGLE_DELAY_MILLIS 1000
+#define RELAY_TOGGLE_DELAY_MICROS (RELAY_TOGGLE_DELAY_MILLIS * 1000)
+#define DEBOUNCE_DELAY_MICROS 15000
+
+void setup_relay_driver();
+
+void toogle_relay();
