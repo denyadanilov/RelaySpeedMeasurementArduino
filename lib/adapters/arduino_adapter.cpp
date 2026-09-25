@@ -37,8 +37,14 @@ uint8_t pin_mode_to_arduino(pin_mode pin_mode) {
   case pin_mode::INPUT_PULLUP_MODE:
     return INPUT_PULLUP;
     break;
+  case pin_mode::INPUT_PULLDOWN_MODE:
+    return INPUT_PULLDOWN;
+    break;
   case pin_mode::OUTPUT_MODE:
     return OUTPUT;
+    break;
+  case pin_mode::INPUT_MODE:
+    return INPUT;
     break;
   default:
     return INPUT;

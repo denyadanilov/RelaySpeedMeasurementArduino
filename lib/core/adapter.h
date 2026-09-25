@@ -1,6 +1,12 @@
 #pragma once
 
-enum class pin_mode { NONE, OUTPUT_MODE, INPUT_PULLUP_MODE };
+enum class pin_mode {
+  NONE,
+  OUTPUT_MODE,
+  INPUT_PULLUP_MODE,
+  INPUT_PULLDOWN_MODE,
+  INPUT_MODE,
+};
 enum class voltage_state {
   RISING_STATE,
   FALLING_STATE,

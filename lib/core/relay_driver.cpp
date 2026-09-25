@@ -6,7 +6,7 @@
 uint8_t relay_toogle_count = 0;
 bool is_relay_enabled = false;
 
-char message_buffer[64] = {0};
+char message_buffer[128] = {0};
 unsigned long update_started_at_micros = 0;
 unsigned long previous_relay_update_micros = 0;
 volatile unsigned long current_relay_update_micros = 0;
@@ -25,7 +25,7 @@ void on_transistor_updated();
 void setup_relay_driver() {
   setup_pin(RELAY_DRIVER_PIN, pin_mode::OUTPUT_MODE);
   setup_pin(RELAY_INPUT_PIN, pin_mode::INPUT_PULLUP_MODE);
-  setup_pin(TRANSISTOR_INPUT_PIN, pin_mode::INPUT_PULLUP_MODE);
+  setup_pin(TRANSISTOR_INPUT_PIN, pin_mode::INPUT_MODE);
   attach_interrupt(RELAY_INPUT_PIN, on_relay_updated,
                    voltage_state::CHANGE_STATE);
   attach_interrupt(TRANSISTOR_INPUT_PIN, on_transistor_updated,
@@ -36,8 +36,8 @@ void toogle_relay() {
 
   if (try_count_stats()) {
     snprintf(message_buffer, sizeof(message_buffer),
-             "Average transistor update time : "
-             "%lu, relay update time: %lu",
+             "Average transistor update time: "
+             "%lu, average relay update time: %lu",
              avarage_transistor_update_duration, avarage_relay_update_duration);
     log_message(message_buffer);
   }
@@ -45,14 +45,16 @@ void toogle_relay() {
   if (relay_toogle_count >= RELAY_TOGGLE_MAX_COUNT) {
     return;
   }
-  if (get_micros_from_start() - update_started_at_micros <
-      RELAY_TOGGLE_DELAY_MICROS) {
+
+  auto now_micros = get_micros_from_start();
+
+  if (now_micros - update_started_at_micros < RELAY_TOGGLE_DELAY_MICROS) {
     return;
   }
 
   relay_toogle_count++;
 
-  update_started_at_micros = get_micros_from_start();
+  update_started_at_micros = now_micros;
 
   if (is_relay_enabled) {
     turn_off_relay();
@@ -74,6 +76,7 @@ void turn_off_relay() {
 void on_relay_updated() {
   current_relay_update_micros = get_micros_from_start();
 }
+
 void on_transistor_updated() {
   current_transistor_update_micros = get_micros_from_start();
 }
