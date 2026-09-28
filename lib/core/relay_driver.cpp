@@ -26,9 +26,9 @@ void setup_relay_driver() {
   setup_pin(RELAY_DRIVER_PIN, pin_mode::OUTPUT_MODE);
   setup_pin(RELAY_INPUT_PIN, pin_mode::INPUT_PULLUP_MODE);
   setup_pin(TRANSISTOR_INPUT_PIN, pin_mode::INPUT_MODE);
-  attach_interrupt(RELAY_INPUT_PIN, on_relay_updated,
+  attach_interrupt(RELAY_INPUT_PIN, &on_relay_updated,
                    voltage_state::CHANGE_STATE);
-  attach_interrupt(TRANSISTOR_INPUT_PIN, on_transistor_updated,
+  attach_interrupt(TRANSISTOR_INPUT_PIN, &on_transistor_updated,
                    voltage_state::CHANGE_STATE);
 }
 
@@ -73,11 +73,11 @@ void turn_off_relay() {
   change_pin_state(RELAY_DRIVER_PIN, pin_state::LOW_STATE);
 }
 
-void on_relay_updated() {
+void IRAM_LOCATED on_relay_updated() {
   current_relay_update_micros = get_micros_from_start();
 }
 
-void on_transistor_updated() {
+void IRAM_LOCATED on_transistor_updated() {
   current_transistor_update_micros = get_micros_from_start();
 }
 

@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef IRAM_LOCATED
+#define IRAM_LOCATED
+#endif
+
 enum class pin_mode {
   NONE,
   OUTPUT_MODE,

@@ -1,3 +1,5 @@
+#define IRAM_LOCATED ARDUINO_ISR_ATTR
+
 #include "adapter.h"
 #include <Arduino.h>
 
